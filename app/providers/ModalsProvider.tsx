@@ -17,7 +17,7 @@ const ModalsProvider = ({ children }: { children: React.ReactNode }) => {
     const [
         isOpenStoreModal,
         { open: onOpenStoreModal, close: onCloseStoreModal },
-    ] = useDisclosure(true);
+    ] = useDisclosure(false);
     const value: IModalsState = {
         isOpenStoreModal,
         onOpenStoreModal,

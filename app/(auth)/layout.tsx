@@ -1,11 +1,8 @@
+import { Center } from "@mantine/core";
 import React from "react";
 
 function layout({ children }: { children: React.ReactNode }) {
-    return (
-        <div className="flex items-center justify-center h-full">
-            {children}
-        </div>
-    );
+    return <Center h={"100vh"}>{children}</Center>;
 }
 
 export default layout;

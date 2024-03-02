@@ -33,3 +33,22 @@ export async function POST(req: NextRequest) {
         return new NextResponse("Internal Server Error", { status: 500 });
     }
 }
+
+export async function GET() {
+    try {
+        const { userId } = auth();
+        if (!userId) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
+        const stores = await prisma.store.findMany({
+            where: {
+                userId,
+            },
+        });
+        return new NextResponse(JSON.stringify(stores), { status: 200 });
+    } catch (error) {
+        console.log("STORES_GET: ", error);
+        return new NextResponse("Internal Server Error", { status: 500 });
+    }
+}

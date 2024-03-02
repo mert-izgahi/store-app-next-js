@@ -1,13 +1,14 @@
 import { useModalsContext } from "@/app/providers/ModalsProvider";
 import { storeInputSchema } from "@/lib/validations";
 import { Store } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
 function useCreateStore() {
+    const queryClient = useQueryClient();
     const { onCloseStoreModal } = useModalsContext();
     const router = useRouter();
     const { mutate: createStore, isPending: isCreateStorePending } =
@@ -21,6 +22,9 @@ function useCreateStore() {
             onSuccess: (data: Store) => {
                 onCloseStoreModal();
                 toast.success("Store created successfully");
+
+                queryClient.invalidateQueries({ queryKey: ["get-stores"] });
+
                 const { id } = data;
                 router.push(`/${id}`);
             },
