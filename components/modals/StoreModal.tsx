@@ -24,6 +24,8 @@ function StoreModal() {
             title="Create Store"
             opened={isOpenStoreModal}
             onClose={onCloseStoreModal}
+            withCloseButton={false}
+            closeOnClickOutside={false}
         >
             <form onSubmit={form.onSubmit(onSubmit)} noValidate>
                 <Stack>
