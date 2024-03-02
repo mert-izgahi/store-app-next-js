@@ -24,10 +24,7 @@ export default function RootLayout({
         <ClerkProvider>
             <html lang="en">
                 <body className={font.className}>
-                    <Providers>
-                        <StoreModal />
-                        {children}
-                    </Providers>
+                    <Providers>{children}</Providers>
                 </body>
             </html>
         </ClerkProvider>

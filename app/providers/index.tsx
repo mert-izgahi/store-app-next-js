@@ -3,6 +3,8 @@ import { MantineProvider } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import ModalsProvider from "./ModalsProvider";
 import theme from "../theme";
+import ReactQueryProvider from "./ReactQueryProvider";
+import ToastProvider from "./ToastProvider";
 
 function Providers({ children }: { children: React.ReactNode }) {
     const [hasMounted, setHasMounted] = useState(false);
@@ -17,7 +19,11 @@ function Providers({ children }: { children: React.ReactNode }) {
 
     return (
         <MantineProvider theme={theme}>
-            <ModalsProvider>{children}</ModalsProvider>
+            <ReactQueryProvider>
+                <ModalsProvider>
+                    <ToastProvider>{children}</ToastProvider>
+                </ModalsProvider>
+            </ReactQueryProvider>
         </MantineProvider>
     );
 }
