@@ -8,7 +8,7 @@ export default function Home() {
     const queryClient = new QueryClient();
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <StoreModal />
+            <StoreModal isOpen={true} />
         </HydrationBoundary>
     );
 }

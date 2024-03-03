@@ -2,7 +2,13 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import prisma from "@/prisma/client";
 import React from "react";
-import { AppShell, AppShellHeader, AppShellMain, Group } from "@mantine/core";
+import {
+    AppShell,
+    AppShellHeader,
+    AppShellMain,
+    Container,
+    Group,
+} from "@mantine/core";
 import Header from "@/components/layout/Header";
 import StoreModal from "@/components/modals/StoreModal";
 import {
@@ -10,6 +16,7 @@ import {
     HydrationBoundary,
     dehydrate,
 } from "@tanstack/react-query";
+import DeleteStoreModal from "@/components/modals/DeleteStoreModal";
 
 interface Props {
     children: React.ReactNode;
@@ -36,13 +43,18 @@ async function layout({ children, params }: Props) {
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
             <AppShell padding="md" header={{ height: 60 }}>
-                <AppShellHeader withBorder={false} bg={"gray.1"} p="md">
-                    <Header activeStoreId={store.id} currentUserId={userId} />
+                <AppShellHeader withBorder={false} bg={"gray.1"}>
+                    <Container size="xl">
+                        <Header activeStoreId={store.id} />
+                    </Container>
                 </AppShellHeader>
                 <AppShellMain>
-                    <StoreModal />
+                    <Container size="xl" py={"xl"}>
+                        <StoreModal isOpen={false} />
+                        <DeleteStoreModal storeId={store.id} />
+                        {children}
+                    </Container>
                 </AppShellMain>
-                {children}
             </AppShell>
         </HydrationBoundary>
     );

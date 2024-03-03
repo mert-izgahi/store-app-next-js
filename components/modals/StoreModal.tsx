@@ -7,7 +7,11 @@ import { useForm, zodResolver } from "@mantine/form";
 import React from "react";
 import { z } from "zod";
 
-function StoreModal() {
+interface Props {
+    isOpen: boolean;
+}
+
+function StoreModal({ isOpen }: Props) {
     const { isOpenStoreModal, onCloseStoreModal } = useModalsContext();
     const { createStore, isCreateStorePending } = useCreateStore();
     const form = useForm<z.infer<typeof storeInputSchema>>({
@@ -22,7 +26,7 @@ function StoreModal() {
     return (
         <Modal
             title="Create Store"
-            opened={isOpenStoreModal}
+            opened={isOpen ? true : isOpenStoreModal}
             onClose={onCloseStoreModal}
             withCloseButton={false}
             closeOnClickOutside={false}

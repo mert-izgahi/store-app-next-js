@@ -15,7 +15,7 @@ datasource db {
 
 
 model Store {
-  id          String @id  @default(cuid())
+  id          String @id  @default(uuid())
   name        String
   description String
   created_at  DateTime @default(now())
@@ -23,4 +23,23 @@ model Store {
 
   // relationships
   userId String
+  billboards Billboard[] @relation("StoreToBillboard")
+  
+}
+
+model Billboard {
+  id          String @id  @default(uuid())
+  storeId     String 
+  name        String
+  description String
+  image       String
+
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  // relationships
+  store Store @relation("StoreToBillboard",fields: [storeId], references: [id])
+  userId String
+
+  
 }

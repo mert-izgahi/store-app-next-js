@@ -1,11 +1,19 @@
 "use client";
 
-import { Button, Flex, Group, Loader, Select, Text } from "@mantine/core";
+import {
+    Button,
+    Flex,
+    Group,
+    Loader,
+    NavLink,
+    Select,
+    Text,
+} from "@mantine/core";
 import React, { useMemo } from "react";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { useModalsContext } from "@/app/providers/ModalsProvider";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { BsShopWindow } from "react-icons/bs";
 import useGetStores from "@/hooks/stores/useGetStores";
 
@@ -13,6 +21,19 @@ interface Props {
     activeStoreId: string;
 }
 function Header({ activeStoreId }: Props) {
+    const pathname = usePathname();
+    const links = [
+        {
+            label: "Home",
+            href: `/${activeStoreId}`,
+            isActive: pathname === `/${activeStoreId}`,
+        },
+        {
+            label: "Settings",
+            href: `/${activeStoreId}/settings`,
+            isActive: pathname === `/${activeStoreId}/settings`,
+        },
+    ];
     const { stores, isLoadingStores } = useGetStores();
     const { onOpenStoreModal } = useModalsContext();
     const router = useRouter();
@@ -29,7 +50,7 @@ function Header({ activeStoreId }: Props) {
     };
 
     return (
-        <Group h="100%" align="center">
+        <Flex h={60} align="center" gap={"md"}>
             <Select
                 disabled={isLoadingStores}
                 rightSection={isLoadingStores ? <Loader size="xs" /> : null}
@@ -45,13 +66,35 @@ function Header({ activeStoreId }: Props) {
             <Button type="button" onClick={onOpenStoreModal}>
                 New Store
             </Button>
-            <Text component={Link} href="/">
+            {/* <Button
+                type="button"
+                variant="subtle"
+                component={Link}
+                href={`/${activeStoreId}/settings`}
+            >
                 Settings
-            </Text>
+            </Button> */}
+            <Flex align="center" gap="md">
+                {links.map((link) => (
+                    <NavLink
+                        key={link.label}
+                        label={link.label}
+                        component={Link}
+                        href={link.href}
+                        active={link.isActive}
+                        variant="subtle"
+                        styles={{
+                            root: {
+                                borderRadius: "var(--mantine-radius-sm)",
+                            },
+                        }}
+                    />
+                ))}
+            </Flex>
             <Flex ms={"auto"}>
                 <UserButton afterSignOutUrl="/" />
             </Flex>
-        </Group>
+        </Flex>
     );
 }
 
