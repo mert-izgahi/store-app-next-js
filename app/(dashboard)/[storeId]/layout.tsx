@@ -6,6 +6,7 @@ import {
     AppShell,
     AppShellHeader,
     AppShellMain,
+    AppShellNavbar,
     Container,
     Group,
 } from "@mantine/core";
@@ -17,6 +18,7 @@ import {
     dehydrate,
 } from "@tanstack/react-query";
 import DeleteStoreModal from "@/components/modals/DeleteStoreModal";
+import Navbar from "@/components/layout/Navbar";
 
 interface Props {
     children: React.ReactNode;
@@ -42,18 +44,24 @@ async function layout({ children, params }: Props) {
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <AppShell padding="md" header={{ height: 60 }}>
+            <AppShell
+                padding="md"
+                header={{ height: 60 }}
+                navbar={{
+                    width: 300,
+                    breakpoint: "sm",
+                }}
+            >
                 <AppShellHeader withBorder={false} bg={"gray.1"}>
-                    <Container size="xl">
-                        <Header activeStoreId={store.id} />
-                    </Container>
+                    <Header activeStoreId={store.id} />
                 </AppShellHeader>
+                <AppShellNavbar p={"md"}>
+                    <Navbar activeStoreId={store.id} />
+                </AppShellNavbar>
                 <AppShellMain>
-                    <Container size="xl" py={"xl"}>
-                        <StoreModal isOpen={false} />
-                        <DeleteStoreModal storeId={store.id} />
-                        {children}
-                    </Container>
+                    <StoreModal isOpen={false} />
+                    <DeleteStoreModal storeId={store.id} />
+                    {children}
                 </AppShellMain>
             </AppShell>
         </HydrationBoundary>
