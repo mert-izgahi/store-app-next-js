@@ -19,10 +19,11 @@ import {
 } from "@tanstack/react-query";
 import DeleteStoreModal from "@/components/modals/DeleteStoreModal";
 import Navbar from "@/components/layout/Navbar";
+import DeleteBillboardModal from "@/components/modals/DeleteBillboardModal";
 
 interface Props {
     children: React.ReactNode;
-    params: { storeId: string };
+    params: { storeId: string; billboardId?: string };
 }
 
 async function layout({ children, params }: Props) {
@@ -61,6 +62,7 @@ async function layout({ children, params }: Props) {
                 <AppShellMain>
                     <StoreModal isOpen={false} />
                     <DeleteStoreModal storeId={store.id} />
+
                     {children}
                 </AppShellMain>
             </AppShell>

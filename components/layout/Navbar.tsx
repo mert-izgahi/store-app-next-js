@@ -14,7 +14,13 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { IoAdd, IoHome, IoSettings, IoStorefront } from "react-icons/io5";
+import {
+    IoAdd,
+    IoHome,
+    IoSettings,
+    IoStorefront,
+    IoClipboard,
+} from "react-icons/io5";
 function Navbar({ activeStoreId }: { activeStoreId: string }) {
     const pathname = usePathname();
     const { onOpenStoreModal } = useModalsContext();
@@ -25,6 +31,12 @@ function Navbar({ activeStoreId }: { activeStoreId: string }) {
             href: `/${activeStoreId}`,
             isActive: pathname === `/${activeStoreId}`,
             icon: <IoHome />,
+        },
+        {
+            label: "Billboards",
+            href: `/${activeStoreId}/billboards`,
+            isActive: pathname === `/${activeStoreId}/billboards`,
+            icon: <IoClipboard />,
         },
         {
             label: "Settings",

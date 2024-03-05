@@ -8,6 +8,9 @@ type IModalsState = {
     isOpenDeleteStoreModal: boolean;
     onOpenDeleteStoreModal: () => void;
     onCloseDeleteStoreModal: () => void;
+    isOpenDeleteBillboardModal: boolean;
+    onOpenDeleteBillboardModal: () => void;
+    onCloseDeleteBillboardModal: () => void;
 };
 
 const ModalContext = createContext<IModalsState>({
@@ -17,6 +20,9 @@ const ModalContext = createContext<IModalsState>({
     isOpenDeleteStoreModal: false,
     onOpenDeleteStoreModal: () => {},
     onCloseDeleteStoreModal: () => {},
+    isOpenDeleteBillboardModal: false,
+    onOpenDeleteBillboardModal: () => {},
+    onCloseDeleteBillboardModal: () => {},
 });
 
 const ModalsProvider = ({ children }: { children: React.ReactNode }) => {
@@ -29,6 +35,15 @@ const ModalsProvider = ({ children }: { children: React.ReactNode }) => {
         isOpenDeleteStoreModal,
         { open: onOpenDeleteStoreModal, close: onCloseDeleteStoreModal },
     ] = useDisclosure(false);
+
+    const [
+        isOpenDeleteBillboardModal,
+        {
+            open: onOpenDeleteBillboardModal,
+            close: onCloseDeleteBillboardModal,
+        },
+    ] = useDisclosure(false);
+
     const value: IModalsState = {
         isOpenStoreModal,
         onOpenStoreModal,
@@ -36,6 +51,9 @@ const ModalsProvider = ({ children }: { children: React.ReactNode }) => {
         isOpenDeleteStoreModal,
         onOpenDeleteStoreModal,
         onCloseDeleteStoreModal,
+        isOpenDeleteBillboardModal,
+        onOpenDeleteBillboardModal,
+        onCloseDeleteBillboardModal,
     };
     return (
         <ModalContext.Provider value={value}>{children}</ModalContext.Provider>

@@ -1,7 +1,7 @@
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-import { storeInputSchema } from "@/lib/validations";
+import { billboardInputSchema } from "@/lib/validations";
 
 export async function POST(req: NextRequest) {
     try {
@@ -11,24 +11,22 @@ export async function POST(req: NextRequest) {
         }
         const body = await req.json();
 
-        const { name, description } = body;
-        const isValid = storeInputSchema.safeParse({ name, description });
+        const isValid = billboardInputSchema.safeParse(body);
 
         if (!isValid.success) {
             return new NextResponse("Invalid input", { status: 400 });
         }
 
-        const store = await prisma.store.create({
+        const billboard = await prisma.billboard.create({
             data: {
-                name,
-                description,
+                ...body,
                 userId,
             },
         });
 
-        return new NextResponse(JSON.stringify(store), { status: 201 });
+        return new NextResponse(JSON.stringify(billboard), { status: 201 });
     } catch (error) {
-        console.log("STORES_POST: ", error);
+        console.log("BILLBOARDS_POST: ", error);
         return new NextResponse("Internal Server Error", { status: 500 });
     }
 }
@@ -40,14 +38,17 @@ export async function GET() {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
-        const stores = await prisma.store.findMany({
+        const billboards = await prisma.billboard.findMany({
             where: {
                 userId,
             },
+            include: {
+                store: true,
+            },
         });
-        return new NextResponse(JSON.stringify(stores), { status: 200 });
+        return new NextResponse(JSON.stringify(billboards), { status: 200 });
     } catch (error) {
-        console.log("STORES_GET: ", error);
+        console.log("BILLBOARDS_GET: ", error);
         return new NextResponse("Internal Server Error", { status: 500 });
     }
 }
